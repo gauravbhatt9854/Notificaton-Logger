@@ -1,8 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
+
 
 const app = express();
 const PORT = 3000;
+app.use(cors());
 
 // Middleware to parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,6 +20,10 @@ app.post('/receive-notification', (req, res) => {
     console.log(`🔔 Text: ${text}`);
     console.log('------------------------------');
 
+    res.status(200).send('Notification received!');
+});
+
+app.get('/', (req, res) => {
     res.status(200).send('Notification received!');
 });
 
