@@ -1,0 +1,25 @@
+import express from 'express';
+import bodyParser from 'body-parser';
+
+const app = express();
+const PORT = 3000;
+
+// Middleware to parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// POST endpoint to receive notifications
+app.post('/receive-notification', (req, res) => {
+    const { package: pkg, title, text } = req.body;
+
+    console.log("📩 New Notification Received:");
+    console.log(`📦 App Package: ${pkg}`);
+    console.log(`📝 Title: ${title}`);
+    console.log(`🔔 Text: ${text}`);
+    console.log('------------------------------');
+
+    res.status(200).send('Notification received!');
+});
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+});
