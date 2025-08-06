@@ -8,6 +8,7 @@ const PORT = 3000;
 app.use(cors());
 
 // Middleware to parse application/x-www-form-urlencoded
+app.use(express.json()); // 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // POST endpoint to receive notifications
