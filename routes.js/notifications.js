@@ -31,7 +31,7 @@ router.post('/receive-notification-user', async (req, res) => {
     });
 
     await notification.save();
-
+    console.log("Notification saved successfully from : " , username , " and text is " , text);
     res.status(201).json({ message: 'Notification saved successfully' });
   } catch (error) {
     console.error('Error saving notification:', error);
