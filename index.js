@@ -8,6 +8,8 @@ import NotificationRouter from './routes.js/notifications.js';
 const app = express();
 const PORT = 3000;
 app.use(cors());
+
+// Middleware to parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(NotificationRouter);
 await connectDB();
