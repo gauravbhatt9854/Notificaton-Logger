@@ -11,6 +11,7 @@ app.use(cors());
 
 // Middleware to parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(NotificationRouter);
 await connectDB();
 
