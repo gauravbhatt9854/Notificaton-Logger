@@ -39,23 +39,44 @@ router.post('/receive-notification-user', async (req, res) => {
   }
 });
 
-
-// 🧾 Get all notifications by username
+// GET /notifications/:username?page=1&limit=6&packageName=samsung&startDate=2025-08-01&endDate=2025-08-06
 router.get('/notifications/:username', async (req, res) => {
   try {
     const { username } = req.params;
+    const { page = 1, limit = 9, start, end, package: pkg } = req.query;
 
-    if (!username) {
-      return res.status(400).json({ error: 'Username is required' });
+    const query = { username };
+    if (start || end) {
+      query.timestamp = {};
+      if (start) query.timestamp.$gte = new Date(start);
+      if (end) query.timestamp.$lte = new Date(end);
     }
+    if (pkg) query.package = pkg;
 
-    const notifications = await Notification.find({ username }).sort({ timestamp: -1 });
+    const total = await Notification.countDocuments(query);
+    const notifications = await Notification.find(query)
+      .sort({ timestamp: -1 })
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
 
-    res.status(200).json({ count: notifications.length, notifications });
-  } catch (error) {
-    console.error('Error fetching notifications:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    const allPackages = await Notification.distinct("package", { username });
+
+    res.json({
+      notifications,
+      total,
+      currentPage: Number(page),
+      totalPages: Math.ceil(total / limit),
+      allPackages
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal error' });
   }
 });
+
+
+
+
+
 
 export default router;
