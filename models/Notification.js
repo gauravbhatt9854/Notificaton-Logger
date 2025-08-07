@@ -6,15 +6,9 @@ const notificationSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  package: {
-    type: String
-  },
-  title: {
-    type: String
-  },
-  text: {
-    type: String
-  },
+  package: String,
+  title: String,
+  text: String,
   timestamp: {
     type: Date,
     default: Date.now
