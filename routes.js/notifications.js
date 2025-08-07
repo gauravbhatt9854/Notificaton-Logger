@@ -47,45 +47,4 @@ router.post('/receive-notification-user', async (req, res) => {
   }
 });
 
-// 🔹 Get all notifications for a user
-router.get('/notifications/:username', async (req, res) => {
-  try {
-    const { username } = req.params;
-    const { page = 1, limit = 9, start, end, package: pkg } = req.query;
-
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    const query = { user: user._id };
-    if (start || end) {
-      query.timestamp = {};
-      if (start) query.timestamp.$gte = new Date(start);
-      if (end) query.timestamp.$lte = new Date(end);
-    }
-    if (pkg) query.package = pkg;
-
-    const total = await Notification.countDocuments(query);
-    const notifications = await Notification.find(query)
-      .sort({ timestamp: -1 })
-      .skip((page - 1) * limit)
-      .limit(Number(limit))
-      .populate('user', 'username'); // optional: populate username in results
-
-    const allPackages = await Notification.distinct("package", { user: user._id });
-
-    res.json({
-      notifications,
-      total,
-      currentPage: Number(page),
-      totalPages: Math.ceil(total / limit),
-      allPackages
-    });
-  } catch (err) {
-    console.error('❌ Error fetching notifications:', err);
-    res.status(500).json({ error: 'Internal error' });
-  }
-});
-
 export default router;

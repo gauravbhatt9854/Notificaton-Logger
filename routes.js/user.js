@@ -3,6 +3,10 @@ import User from '../models/User.js';
 
 const router = express.Router();
 
+router.get("/", (req, res) => {
+  res.send("Hello server is running - Notification Backend Logic");
+})
+
 router.post('/user-register', async (req, res) => {
   console.log('📥 Received user registration request');
 

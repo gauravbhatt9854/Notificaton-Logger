@@ -3,7 +3,6 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import { connectDB } from './config/db.js';
 import NotificationRouter from './routes.js/notifications.js';
-import UiRouter from './routes.js/ui.js';
 import UserRouter from './routes.js/user.js';
 
 
@@ -28,7 +27,6 @@ app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(NotificationRouter);
-app.use(UiRouter);
 app.use(UserRouter);
 await connectDB();
 
