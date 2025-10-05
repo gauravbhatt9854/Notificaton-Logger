@@ -6,6 +6,9 @@ import NotificationRouter from './routes.js/notifications.js';
 import UserRouter from './routes.js/user.js';
 
 
+import dotenv from 'dotenv';
+dotenv.config()
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 // Parse comma-separated list of allowed origins from .env
